@@ -21,7 +21,7 @@ public class UserController {
         // Associate the ValidatorVisitors with the UsernameValidator
 
         // Validate the user object
-        usernameValidator.validateAndThrow(user);
+        usernameValidator.validateAndThrow(user.getName());
 
 
         return user;

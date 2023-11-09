@@ -4,17 +4,17 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class ValidationException <M extends Serializable> extends Exception{
+public class ValidationException extends RuntimeException {
+    private final Map<String, ? extends Serializable> errors;
 
-    private final Map<String, M> errors;
-
-    public ValidationException(Map<String, M> errors) {
-        super("Validation failed");
+    public ValidationException(Map<String, ? extends Serializable> errors) {
+        super("Validation errors occurred");
         this.errors = errors;
     }
 
-    public Map<String, M> getErrors() {
+    public Map<String, ? extends Serializable> getErrors() {
         return errors;
     }
 }
+
 
