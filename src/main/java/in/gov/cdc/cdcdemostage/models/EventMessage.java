@@ -21,4 +21,10 @@ public class EventMessage implements Serializable {
     private String requestStage;
     private String requestStageStatus;
     private UidV2Data[] uidV2DataArray; // [originTracker, uidMaster, uidPhoto, uidAddress, uidResPref]
+
+    public UidV2Data[] getUidV2DataArray() {
+        return uidV2DataArray;
+    }
 }
+
+
