@@ -1,12 +1,14 @@
 package in.gov.cdc.cdcdemostage.validators;
 
 import in.gov.cdc.cdcdemostage.models.EventMessage;
+import org.springframework.stereotype.Component;
 
 import java.util.BitSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-// This will be created as spring bean
+@Component
 public class DataValidator implements IDataValidator {
 
     // Constructor injection of all validators
@@ -14,11 +16,12 @@ public class DataValidator implements IDataValidator {
 
     public DataValidator(List<IValidator> validators) {
         this.validators = validators;
+        this.validators.forEach(v -> System.out.println(v.getClass()));
     }
 
     // This will be only exposed method consumed by clients
     @Override
-    public List<ValidationError> validate(EventMessage event) {
+    public List<Optional<ValidationError>> validate(EventMessage event) {
 
         BitSet bitSet = filter(event);
         return getSupportedValidators(bitSet).stream()
@@ -28,7 +31,10 @@ public class DataValidator implements IDataValidator {
 
     // Given an event message, return a bitset of the current change
     private BitSet filter(EventMessage event) {
-        return null;
+        BitSet bs = event.getUidV2DataArray()[0].getUidOriginTracker().getUpdateBits();
+        bs.xor(event.getUidV2DataArray()[0].getUidOriginTracker().getRejectBits());
+        System.out.println("bitset : " + bs);
+        return bs;
     }
 
     // Given a bitset get all the supported validators

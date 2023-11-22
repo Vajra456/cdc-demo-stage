@@ -1,10 +1,12 @@
 package in.gov.cdc.cdcdemostage.validators;
 
 import in.gov.cdc.cdcdemostage.models.UidV2Data;
+import org.springframework.stereotype.Component;
 
 import java.util.BitSet;
+import java.util.Optional;
 
-//Spring component
+@Component
 class ResidentNameValidator implements IValidator {
 
     private String residentName;
@@ -12,14 +14,14 @@ class ResidentNameValidator implements IValidator {
     @Override
     public boolean supports(BitSet bitSet) {
         // if bitset contains resident name update
-        return false;
+        return bitSet.get(1);
     }
 
     @Override
-    public ValidationError validate(UidV2Data[] uidV2Data) {
+    public Optional<ValidationError> validate(UidV2Data[] uidV2Data) {
         residentName = getResidentName(uidV2Data);
         // applicable validations
-        return null;
+        return Optional.empty();
     }
 
     private String getResidentName(UidV2Data[] uidV2Data){

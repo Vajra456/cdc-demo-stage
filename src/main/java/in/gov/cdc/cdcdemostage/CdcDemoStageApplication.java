@@ -4,8 +4,12 @@ import com.google.common.reflect.ClassPath;
 import in.gov.cdc.cdcdemostage.annotations.RuleDescriptor;
 import in.gov.cdc.cdcdemostage.model.Event;
 import in.gov.cdc.cdcdemostage.model.User;
+import in.gov.cdc.cdcdemostage.models.EventMessage;
+import in.gov.cdc.cdcdemostage.models.UidOriginTracker;
+import in.gov.cdc.cdcdemostage.models.UidV2Data;
 import in.gov.cdc.cdcdemostage.validators.*;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -13,22 +17,25 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.time.OffsetDateTime;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @SpringBootApplication
-public class CdcDemoStageApplication {
+public class CdcDemoStageApplication implements CommandLineRunner {
+
+	private DataValidator dataValidator;
+
+	public CdcDemoStageApplication(DataValidator dataValidator) {
+		this.dataValidator = dataValidator;
+	}
 
 	public static void main(String[] args) {
-//		SpringApplication.run(CdcDemoStageApplication.class, args);
+		SpringApplication.run(CdcDemoStageApplication.class, args);
 
 		// Create a User instance
-		User user = new User("John Doe", "test", "test@test.com", OffsetDateTime.now());
-		Event event = new Event(UUID.randomUUID().toString(), "296836293865829356",
-				"U", "11100010101010000001010101010101", OffsetDateTime.now().toString(), 01);
+//		User user = new User("John Doe", "test", "test@test.com", OffsetDateTime.now());
+//		Event event = new Event(UUID.randomUUID().toString(), "296836293865829356",
+//				"U", "11100010101010000001010101010101", OffsetDateTime.now().toString(), 01);
 
 //		ValidatorFactory factory = new ValidatorFactory();
 //
@@ -57,7 +64,7 @@ public class CdcDemoStageApplication {
 //			}
 //		}
 //		ruleFilter(event, user);
-		doProcess(event, user);
+//		doProcess(event, user);
 	}
 
 
@@ -114,6 +121,26 @@ public class CdcDemoStageApplication {
 							.equalsIgnoreCase(packageName))
 					.map(clazz -> clazz.load())
 					.collect(Collectors.toList());
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+
+		EventMessage eventMessage = new EventMessage();
+		UidOriginTracker uidOriginTracker = new UidOriginTracker();
+		BitSet updateBits = new BitSet(32);
+		// resident name & resident local name update
+		updateBits.set(1,true);
+		updateBits.set(2, true);
+		BitSet rejectBits = new BitSet(32);
+		uidOriginTracker.setUpdateBits(updateBits);
+		uidOriginTracker.setRejectBits(rejectBits);
+		UidV2Data uidV2Data = new UidV2Data();
+		uidV2Data.setUidOriginTracker(uidOriginTracker);
+		eventMessage.setUidV2DataArray(new UidV2Data[]{uidV2Data});
+		List<Optional<ValidationError>> ve = this.dataValidator.validate(eventMessage);
+
+		ve.stream().filter(Optional::isPresent).forEach(v -> System.out.println(v.get().getErrorMessage()));
 	}
 }
 

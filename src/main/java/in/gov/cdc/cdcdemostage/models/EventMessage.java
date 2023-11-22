@@ -25,6 +25,10 @@ public class EventMessage implements Serializable {
     public UidV2Data[] getUidV2DataArray() {
         return uidV2DataArray;
     }
+
+    public void setUidV2DataArray(UidV2Data[] uidV2DataArray) {
+        this.uidV2DataArray = uidV2DataArray;
+    }
 }
 
 
