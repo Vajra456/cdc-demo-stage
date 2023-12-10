@@ -1,29 +1,38 @@
 package in.gov.cdc.cdcdemostage;
 
 import com.google.common.reflect.ClassPath;
-import in.gov.cdc.cdcdemostage.annotations.RuleDescriptor;
-import in.gov.cdc.cdcdemostage.model.Event;
-import in.gov.cdc.cdcdemostage.model.User;
-import in.gov.cdc.cdcdemostage.models.EventMessage;
-import in.gov.cdc.cdcdemostage.models.UidOriginTracker;
-import in.gov.cdc.cdcdemostage.models.UidV2Data;
-import in.gov.cdc.cdcdemostage.validators.*;
-import org.jetbrains.annotations.NotNull;
+import com.uidai.enu.common.model.*;
+import in.gov.cdc.cdcdemostage.validationHelper.impl.DataValidator;
+import in.gov.cdc.cdcdemostage.validators.address.validationStarter.AddressValidator;
+import in.gov.cdc.cdcdemostage.validators.dob.DobObjectValidator;
+import in.gov.cdc.cdcdemostage.validators.document.DocumentValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @SpringBootApplication
+@EnableFeignClients
 public class CdcDemoStageApplication implements CommandLineRunner {
 
 	private DataValidator dataValidator;
+
+
+	@Autowired
+	DocumentValidator documentValidator;
+
+	@Autowired
+	AddressValidator addressValidator;
+
+	@Autowired
+	DobObjectValidator dobValidator;
+
+	public record ResidentRecord(ExtractedPacket extractedPacket) {}
 
 	public CdcDemoStageApplication(DataValidator dataValidator) {
 		this.dataValidator = dataValidator;
@@ -42,7 +51,7 @@ public class CdcDemoStageApplication implements CommandLineRunner {
 //		// Register different ValidatorVisitor implementations
 //		// Here we can scan the componet and build all the validations
 //		factory.registerValidatorVisitor("UserValidator", new UserValidator.UserValidatorVisitor());
-//		factory.registerValidatorVisitor("EmailValidator", new EmailValidator.EmailValidatorVisitor());
+//		factory.registerValidatorVisitor("EmailValidators", new EmailValidators.EmailValidatorVisitor());
 //
 //		// During runtime, determine the criteria and select the appropriate ValidatorVisitor
 //		String criteria = "UserValidator";
@@ -67,50 +76,50 @@ public class CdcDemoStageApplication implements CommandLineRunner {
 //		doProcess(event, user);
 	}
 
-
-	public static void doProcess(@NotNull Event event, User user) {
-		for (int i = 0; i < 100; i++) {
-			final int index = i;
-			new Thread(() -> {
-				System.out.println(Thread.currentThread().getName());
-				ruleFilter(event, user);   // Pass each list for printing
-			}).start();
-		}
-	}
-
-	public static void ruleFilter(@NotNull Event event, User user) {
-		try {
-			// Get all the Validation Classes from the package
-			List<Class> clazzzz = getClassList("in.gov.cdc.cdcdemostage.validators");
-
-
-			for (Class<?> clazz : clazzzz) {
-				// Assuming the class has a default (no-argument) constructor
-				Object instance = clazz.getDeclaredConstructor().newInstance();
-
-				for (Method method : clazz.getDeclaredMethods()) {
-
-
-					RuleDescriptor[] annotations = method.getAnnotationsByType(RuleDescriptor.class);
-
-					// If the annotation is not null
-					if (annotations != null) {
-						for (RuleDescriptor ruleDescriptor : annotations) {
-							if (ruleDescriptor.requestType().equals(event.getRequestType())
-									&& ruleDescriptor.mask().equals(event.getBitmap()))
-								try {
-									method.invoke(instance, user);
-								} catch (Throwable ex) {
-									ex.printStackTrace(); // Print the full stack trace for better debugging
-								}
-						}
-					}
-				}
-			}
-		}catch (Exception e) {
-			e.printStackTrace(); // Handle the exception appropriately
-		}
-	}
+//
+//	public static void doProcess(@NotNull Event event, User user) {
+//		for (int i = 0; i < 100; i++) {
+//			final int index = i;
+//			new Thread(() -> {
+//				System.out.println(Thread.currentThread().getName());
+//				ruleFilter(event, user);   // Pass each list for printing
+//			}).start();
+//		}
+//	}
+//
+//	public static void ruleFilter(@NotNull Event event, User user) {
+//		try {
+//			// Get all the Validation Classes from the package
+//			List<Class> clazzzz = getClassList("in.gov.cdc.cdcdemostage.validators");
+//
+//
+//			for (Class<?> clazz : clazzzz) {
+//				// Assuming the class has a default (no-argument) constructor
+//				Object instance = clazz.getDeclaredConstructor().newInstance();
+//
+//				for (Method method : clazz.getDeclaredMethods()) {
+//
+//
+//					RuleDescriptor[] annotations = method.getAnnotationsByType(RuleDescriptor.class);
+//
+//					// If the annotation is not null
+//					if (annotations != null) {
+//						for (RuleDescriptor ruleDescriptor : annotations) {
+//							if (ruleDescriptor.requestType().equals(event.getRequestType())
+//									&& ruleDescriptor.mask().equals(event.getBitmap()))
+//								try {
+//									method.invoke(instance, user);
+//								} catch (Throwable ex) {
+//									ex.printStackTrace(); // Print the full stack trace for better debugging
+//								}
+//						}
+//					}
+//				}
+//			}
+//		}catch (Exception e) {
+//			e.printStackTrace(); // Handle the exception appropriately
+//		}
+//	}
 
 	public static List<Class> getClassList(String packageName) throws IOException {
 
@@ -125,22 +134,40 @@ public class CdcDemoStageApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-
 		EventMessage eventMessage = new EventMessage();
-		UidOriginTracker uidOriginTracker = new UidOriginTracker();
-		BitSet updateBits = new BitSet(32);
-		// resident name & resident local name update
-		updateBits.set(1,true);
-		updateBits.set(2, true);
-		BitSet rejectBits = new BitSet(32);
-		uidOriginTracker.setUpdateBits(updateBits);
-		uidOriginTracker.setRejectBits(rejectBits);
-		UidV2Data uidV2Data = new UidV2Data();
-		uidV2Data.setUidOriginTracker(uidOriginTracker);
-		eventMessage.setUidV2DataArray(new UidV2Data[]{uidV2Data});
-		List<Optional<ValidationError>> ve = this.dataValidator.validate(eventMessage);
-
-		ve.stream().filter(Optional::isPresent).forEach(v -> System.out.println(v.get().getErrorMessage()));
+		ResidentProfile residentProfile=new ResidentProfile();
+		residentProfile.setPoName("Tildanga");
+		residentProfile.setPincode("742212");
+		residentProfile.setResName("abhin");
+		residentProfile.setDistrict("00324");residentProfile.setDistrictName("Murshidabad");
+		residentProfile.setVtc("1234");residentProfile.setVtcName("Dohitpur");
+		residentProfile.setState("19");residentProfile.setStateName("West Bengal");
+		ExtractedPacket extractedPacket=new ExtractedPacket();
+		EnrollmentPacket enrollmentPacket=new EnrollmentPacket();
+		enrollmentPacket.setResidentProfile(residentProfile);
+		extractedPacket.setPacket(enrollmentPacket);
+		dobValidator.validate(extractedPacket,eventMessage);
+//		documentValidator.validate(extractedPacket);
+		addressValidator.validate(extractedPacket,eventMessage);
+//		ExtractedPacket extractedPacket = new ExtractedPacket();
+//		extractedPacket.getPacket().getResidentProfile().setResName("Rushabh Chordiya");
+//		extractedPacket.getPacket().getResidentProfile().setDob(new Dob(true,2,2023,31,null,new Status(),true,true,true));
+//		ResidentRecord residentRecord = new ResidentRecord(extractedPacket);
+//		BitSet updateBits = new BitSet(32);
+//
+//		// resident name & resident local name update
+//		updateBits.set(1,true);
+////		updateBits.set(2, true);
+//		updateBits.set(3,true);
+////		updateBits.set(8, true);
+//
+//		BitSet rejectBits = new BitSet(32);
+//		eventMessage.setRejectBits(rejectBits.toString());
+//		eventMessage.getPacketMetaData().setBitMap(updateBits.toString());
+//
+//		List<Optional<ValidationError>> ve = this.dataValidator.validate(eventMessage, residentRecord.extractedPacket);
+//
+//		ve.stream().filter(Optional::isPresent).forEach(v -> System.out.println(v.get().getErrorMessage()));
 	}
 }
 
