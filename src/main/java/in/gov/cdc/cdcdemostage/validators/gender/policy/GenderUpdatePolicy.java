@@ -1,5 +1,6 @@
 package in.gov.cdc.cdcdemostage.validators.gender.policy;
 
+import in.gov.cdc.cdcdemostage.models.ExtractedPacket;
 import in.gov.cdc.cdcdemostage.models.ValidationError;
 import in.gov.cdc.cdcdemostage.validators.specs.IPolicyValidator;
 import org.springframework.stereotype.Component;
@@ -8,7 +9,7 @@ import java.util.BitSet;
 import java.util.Optional;
 
 @Component
-public class GenderUpdatePolicy implements IPolicyValidator<String> {
+public class GenderUpdatePolicy implements IPolicyValidator{
 
     @Override
     public boolean supports(BitSet b) {
@@ -17,7 +18,7 @@ public class GenderUpdatePolicy implements IPolicyValidator<String> {
 
     @Override
     public String mode(String mode) {
-        return false;
+        return "ONLINE";
     }
 
     /**

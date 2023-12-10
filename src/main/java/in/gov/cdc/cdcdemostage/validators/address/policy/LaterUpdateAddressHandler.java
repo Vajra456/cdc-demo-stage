@@ -1,5 +1,6 @@
 package in.gov.cdc.cdcdemostage.validators.address.policy;
 
+import in.gov.cdc.cdcdemostage.models.ExtractedPacket;
 import in.gov.cdc.cdcdemostage.models.ValidationError;
 import in.gov.cdc.cdcdemostage.validators.specs.IPolicyValidator;
 
@@ -11,7 +12,7 @@ import java.util.Optional;
  * current request has been processed and already updated in the database. In that
  * case current address update request is rejected.
  */
-public class LaterUpdateAddressHandler implements IPolicyValidator<ExtractedPacket> {
+public class LaterUpdateAddressHandler implements IPolicyValidator {
     @Override
     public boolean supports(BitSet b) {
         return false;
@@ -19,7 +20,7 @@ public class LaterUpdateAddressHandler implements IPolicyValidator<ExtractedPack
 
     @Override
     public String mode(String mode) {
-        return false;
+        return "ONLINE";
     }
 
     @Override

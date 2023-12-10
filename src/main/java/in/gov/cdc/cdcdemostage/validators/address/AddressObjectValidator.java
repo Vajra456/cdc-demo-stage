@@ -1,5 +1,7 @@
 package in.gov.cdc.cdcdemostage.validators.address;
 
+import in.gov.cdc.cdcdemostage.models.Event;
+import in.gov.cdc.cdcdemostage.models.ExtractedPacket;
 import in.gov.cdc.cdcdemostage.models.ValidationError;
 import in.gov.cdc.cdcdemostage.validators.specs.IObjectValidator;
 
@@ -29,7 +31,7 @@ public class AddressObjectValidator implements IObjectValidator {
     }
 
     @Override
-    public Optional<List<ValidationError>> validate(ExtractedPacket enrollmentPacket, EventMessage eventMessage) {
+    public Optional<List<ValidationError>> validate(ExtractedPacket enrollmentPacket, Event eventMessage) {
         return Optional.empty();
     }
 }

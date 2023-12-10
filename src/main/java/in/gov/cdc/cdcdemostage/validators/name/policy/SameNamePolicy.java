@@ -1,5 +1,6 @@
 package in.gov.cdc.cdcdemostage.validators.name.policy;
 
+import in.gov.cdc.cdcdemostage.models.ExtractedPacket;
 import in.gov.cdc.cdcdemostage.models.ValidationError;
 import in.gov.cdc.cdcdemostage.validators.specs.IPolicyValidator;
 
@@ -10,7 +11,7 @@ import java.util.Optional;
  * This class checks teh current name vis-a-vis existing name in the UIDv2master
  * If the name is same the request is to be rejected.
  */
-public class SameNamePolicy implements IPolicyValidator<String> {
+public class SameNamePolicy implements IPolicyValidator {
 
     @Override
     public boolean supports(BitSet b) {
@@ -19,7 +20,7 @@ public class SameNamePolicy implements IPolicyValidator<String> {
 
     @Override
     public String mode(String mode) {
-        return false;
+        return "ONLINE";
     }
 
     @Override

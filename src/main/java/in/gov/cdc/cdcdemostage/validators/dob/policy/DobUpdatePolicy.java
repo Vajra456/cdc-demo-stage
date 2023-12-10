@@ -1,5 +1,6 @@
 package in.gov.cdc.cdcdemostage.validators.dob.policy;
 
+import in.gov.cdc.cdcdemostage.models.ExtractedPacket;
 import in.gov.cdc.cdcdemostage.models.ValidationError;
 import in.gov.cdc.cdcdemostage.validators.specs.IPolicyValidator;
 
@@ -18,7 +19,7 @@ public class DobUpdatePolicy implements IPolicyValidator {
 
     @Override
     public String mode(String mode) {
-        return false;
+        return "ONLINE";
     }
 
     @Override

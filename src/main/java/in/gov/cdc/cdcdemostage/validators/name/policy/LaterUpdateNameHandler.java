@@ -1,5 +1,6 @@
 package in.gov.cdc.cdcdemostage.validators.name.policy;
 
+import in.gov.cdc.cdcdemostage.models.ExtractedPacket;
 import in.gov.cdc.cdcdemostage.models.ValidationError;
 import in.gov.cdc.cdcdemostage.validators.specs.IPolicyValidator;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ import java.util.Optional;
  * as null and void.
  */
 @Component
-public class LaterUpdateNameHandler implements IPolicyValidator<String> {
+public class LaterUpdateNameHandler implements IPolicyValidator{
     @Override
     public boolean supports(BitSet b) {
         return false;
@@ -21,7 +22,7 @@ public class LaterUpdateNameHandler implements IPolicyValidator<String> {
 
     @Override
     public String mode(String mode) {
-        return false;
+        return "ONLINE";
     }
 
     @Override

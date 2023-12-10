@@ -1,5 +1,7 @@
 package in.gov.cdc.cdcdemostage.validators.contact;
 
+import in.gov.cdc.cdcdemostage.models.Event;
+import in.gov.cdc.cdcdemostage.models.ExtractedPacket;
 import in.gov.cdc.cdcdemostage.models.ValidationError;
 import in.gov.cdc.cdcdemostage.validators.specs.IObjectValidator;
 import org.springframework.stereotype.Component;
@@ -37,7 +39,7 @@ public class ContactObjectValidator implements IObjectValidator {
      * @return
      */
     @Override
-    public Optional<List<ValidationError>> validate(ExtractedPacket enrollmentPacket, EventMessage eventMessage) {
+    public Optional<List<ValidationError>> validate(ExtractedPacket enrollmentPacket, Event eventMessage) {
         return Optional.empty();
     }
 }

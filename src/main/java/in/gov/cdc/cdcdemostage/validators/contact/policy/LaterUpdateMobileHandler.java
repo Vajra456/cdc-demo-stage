@@ -1,5 +1,6 @@
 package in.gov.cdc.cdcdemostage.validators.contact.policy;
 
+import in.gov.cdc.cdcdemostage.models.ExtractedPacket;
 import in.gov.cdc.cdcdemostage.models.ValidationError;
 import in.gov.cdc.cdcdemostage.validators.specs.IPolicyValidator;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ import java.util.Optional;
  * Enrolment server.
  */
 @Component
-public class LaterUpdateMobileHandler implements IPolicyValidator<ExtractedPacket> {
+public class LaterUpdateMobileHandler implements IPolicyValidator {
     @Override
     public boolean supports(BitSet b) {
         return false;
@@ -21,7 +22,7 @@ public class LaterUpdateMobileHandler implements IPolicyValidator<ExtractedPacke
 
     @Override
     public String mode(String mode) {
-        return false;
+        return "ONLINE";
     }
 
     /**

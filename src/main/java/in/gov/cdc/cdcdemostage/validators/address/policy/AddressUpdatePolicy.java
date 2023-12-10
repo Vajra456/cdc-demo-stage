@@ -1,5 +1,6 @@
 package in.gov.cdc.cdcdemostage.validators.address.policy;
 
+import in.gov.cdc.cdcdemostage.models.ExtractedPacket;
 import in.gov.cdc.cdcdemostage.models.ValidationError;
 import in.gov.cdc.cdcdemostage.validators.specs.IPolicyValidator;
 import org.springframework.stereotype.Component;
@@ -13,7 +14,7 @@ import java.util.Optional;
  * request type and mode.
  */
 @Component
-public class AddressUpdatePolicy implements IPolicyValidator<ExtractedPacket> {
+public class AddressUpdatePolicy implements IPolicyValidator {
     @Override
     public boolean supports(BitSet b) {
         return false;
@@ -21,7 +22,7 @@ public class AddressUpdatePolicy implements IPolicyValidator<ExtractedPacket> {
 
     @Override
     public String mode(String mode) {
-        return false;
+        return "ONLINE";
     }
 
     @Override
@@ -47,7 +48,4 @@ public class AddressUpdatePolicy implements IPolicyValidator<ExtractedPacket> {
         return Optional.empty();
     }
 
-    /**
-     *
-     */
 }

@@ -1,7 +1,7 @@
 package in.gov.cdc.cdcdemostage.controllers;
 
-import com.uidai.enu.common.model.EventMessage;
 import in.gov.cdc.cdcdemostage.exception.ValidationException;
+import in.gov.cdc.cdcdemostage.models.Event;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,12 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
 
-
-
     @PostMapping("/users")
-    public EventMessage createUser(@RequestBody EventMessage eventMessage) throws ValidationException {
+    public Event createUser(@RequestBody Event eventMessage) throws ValidationException {
         // Associate the ValidatorVisitors with the UsernameValidator
-
 
         return eventMessage;
     }

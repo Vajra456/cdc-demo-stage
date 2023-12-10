@@ -1,5 +1,6 @@
 package in.gov.cdc.cdcdemostage.validators.contact.policy;
 
+import in.gov.cdc.cdcdemostage.models.ExtractedPacket;
 import in.gov.cdc.cdcdemostage.models.ValidationError;
 import in.gov.cdc.cdcdemostage.validators.specs.IPolicyValidator;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ import java.util.Optional;
  * of the request.
  */
 @Component
-public class MobileOwnershipPolicy implements IPolicyValidator<ExtractedPacket> {
+public class MobileOwnershipPolicy implements IPolicyValidator {
     @Override
     public boolean supports(BitSet b) {
         return false;
@@ -22,7 +23,7 @@ public class MobileOwnershipPolicy implements IPolicyValidator<ExtractedPacket> 
 
     @Override
     public String mode(String mode) {
-        return false;
+        return "ONLINE";
     }
 
     @Override

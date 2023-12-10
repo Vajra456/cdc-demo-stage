@@ -1,5 +1,6 @@
 package in.gov.cdc.cdcdemostage.validators.dob.policy;
 
+import in.gov.cdc.cdcdemostage.models.ExtractedPacket;
 import in.gov.cdc.cdcdemostage.models.ValidationError;
 import in.gov.cdc.cdcdemostage.validators.specs.IPolicyValidator;
 import org.springframework.stereotype.Component;
@@ -41,6 +42,6 @@ public class DoBDeclarationPolicy implements IPolicyValidator {
      * @return
      */
     private boolean isValidSupportingPobAvailable(String dobType, String enrolmentDate) {       /* enrolmentDate can be Offset date */
-
+        return false;
     }
 }

@@ -1,9 +1,6 @@
 package in.gov.cdc.cdcdemostage;
 
 import com.google.common.reflect.ClassPath;
-import com.uidai.enu.common.model.*;
-import in.gov.cdc.cdcdemostage.validationHelper.impl.DataValidator;
-import in.gov.cdc.cdcdemostage.validators.address.validationStarter.AddressValidator;
 import in.gov.cdc.cdcdemostage.validators.dob.DobObjectValidator;
 import in.gov.cdc.cdcdemostage.validators.document.DocumentValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,23 +17,14 @@ import java.util.stream.Collectors;
 @EnableFeignClients
 public class CdcDemoStageApplication implements CommandLineRunner {
 
-	private DataValidator dataValidator;
-
-
-	@Autowired
-	DocumentValidator documentValidator;
-
-	@Autowired
-	AddressValidator addressValidator;
 
 	@Autowired
 	DobObjectValidator dobValidator;
 
-	public record ResidentRecord(ExtractedPacket extractedPacket) {}
 
-	public CdcDemoStageApplication(DataValidator dataValidator) {
-		this.dataValidator = dataValidator;
-	}
+//	public CdcDemoStageApplication(DataValidator dataValidator) {
+//		this.dataValidator = dataValidator;
+//	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(CdcDemoStageApplication.class, args);
@@ -134,21 +122,22 @@ public class CdcDemoStageApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		EventMessage eventMessage = new EventMessage();
-		ResidentProfile residentProfile=new ResidentProfile();
-		residentProfile.setPoName("Tildanga");
-		residentProfile.setPincode("742212");
-		residentProfile.setResName("abhin");
-		residentProfile.setDistrict("00324");residentProfile.setDistrictName("Murshidabad");
-		residentProfile.setVtc("1234");residentProfile.setVtcName("Dohitpur");
-		residentProfile.setState("19");residentProfile.setStateName("West Bengal");
-		ExtractedPacket extractedPacket=new ExtractedPacket();
-		EnrollmentPacket enrollmentPacket=new EnrollmentPacket();
-		enrollmentPacket.setResidentProfile(residentProfile);
-		extractedPacket.setPacket(enrollmentPacket);
-		dobValidator.validate(extractedPacket,eventMessage);
-//		documentValidator.validate(extractedPacket);
-		addressValidator.validate(extractedPacket,eventMessage);
+		System.out.println("Hello World");
+//		EventMessage eventMessage = new EventMessage();
+//		ResidentProfile residentProfile=new ResidentProfile();
+//		residentProfile.setPoName("Tildanga");
+//		residentProfile.setPincode("742212");
+//		residentProfile.setResName("abhin");
+//		residentProfile.setDistrict("00324");residentProfile.setDistrictName("Murshidabad");
+//		residentProfile.setVtc("1234");residentProfile.setVtcName("Dohitpur");
+//		residentProfile.setState("19");residentProfile.setStateName("West Bengal");
+//		ExtractedPacket extractedPacket=new ExtractedPacket();
+//		EnrollmentPacket enrollmentPacket=new EnrollmentPacket();
+//		enrollmentPacket.setResidentProfile(residentProfile);
+//		extractedPacket.setPacket(enrollmentPacket);
+//		dobValidator.validate(extractedPacket,eventMessage);
+////		documentValidator.validate(extractedPacket);
+//		addressValidator.validate(extractedPacket,eventMessage);
 //		ExtractedPacket extractedPacket = new ExtractedPacket();
 //		extractedPacket.getPacket().getResidentProfile().setResName("Rushabh Chordiya");
 //		extractedPacket.getPacket().getResidentProfile().setDob(new Dob(true,2,2023,31,null,new Status(),true,true,true));

@@ -1,5 +1,6 @@
 package in.gov.cdc.cdcdemostage.validators.gender.policy;
 
+import in.gov.cdc.cdcdemostage.models.ExtractedPacket;
 import in.gov.cdc.cdcdemostage.models.ValidationError;
 import in.gov.cdc.cdcdemostage.validators.specs.IPolicyValidator;
 
@@ -11,7 +12,7 @@ import java.util.Optional;
  * Unlike Dob, it a separate class to check the applicability of the Gender update
  * ex eption policy
  */
-public class GenderUpdateExceptionPolicy implements IPolicyValidator<String> {
+public class GenderUpdateExceptionPolicy implements IPolicyValidator {
     @Override
     public boolean supports(BitSet b) {
         return false;
@@ -19,7 +20,7 @@ public class GenderUpdateExceptionPolicy implements IPolicyValidator<String> {
 
     @Override
     public String mode(String mode) {
-        return false;
+        return "ONLINE";
     }
 
     /**
