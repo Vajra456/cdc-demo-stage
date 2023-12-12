@@ -2,13 +2,11 @@ package in.gov.cdc.cdcdemostage.validators.address.semantic;
 
 import in.gov.cdc.cdcdemostage.models.ExtractedPacket;
 import in.gov.cdc.cdcdemostage.models.ValidationError;
-import in.gov.cdc.cdcdemostage.models.pincode.*;
 import in.gov.cdc.cdcdemostage.validators.specs.ISemanticValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.BitSet;
-import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -21,8 +19,8 @@ public class AddressSemanticValidator implements ISemanticValidator {
     }
 
     @Override
-    public String mode(String mode) {
-        return "ONLINE";
+    public boolean mode(String mode) {
+        return true;
     }
 
     @Override

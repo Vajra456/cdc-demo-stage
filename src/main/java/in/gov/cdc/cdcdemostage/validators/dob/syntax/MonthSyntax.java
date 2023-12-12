@@ -7,8 +7,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.BitSet;
 import java.util.Optional;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static in.gov.cdc.cdcdemostage.constant.Constants.OFFLINE;
+import static in.gov.cdc.cdcdemostage.constant.Constants.ONLINE;
 
 /**
  * This clas performs the validation of the month field of the Date.
@@ -21,13 +23,19 @@ public class MonthSyntax implements ISyntaxValidator{
 
     @Override
     public boolean supports(BitSet b) {
-        return b.get(3)||b.get(14);
+        return b.get(5) || b.get(13);           // Check the applicability of this validator
     }
 
+    /**
+     * This class is used to validate the date syntax for both ONLINE and OFFLINE mode
+     * @param mode
+     * @return
+     */
     @Override
-    public String mode(String mode) {
-        return "ONLINE";
+    public boolean mode(String mode) {
+        return mode.equals(ONLINE) || mode.equals(OFFLINE);
     }
+
 
     @Override
     public Optional<ValidationError> validate(ExtractedPacket data) {

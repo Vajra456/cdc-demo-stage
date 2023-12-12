@@ -11,4 +11,8 @@ public interface Constants {
     public static final String GEO_PINCODE_DETAILS="geoPincodeDetails";
     public static final String ERRORS = "errors";
     public static final String PINCODE_DETAILS="pincodeDetails";
+    public static final String ONLINE = "ONLINE";
+    public static final String  OFFLINE = "OFFLINE";
+
+
 }

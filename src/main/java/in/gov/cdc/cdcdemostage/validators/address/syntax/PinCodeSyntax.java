@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.BitSet;
 import java.util.Optional;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -25,8 +24,8 @@ public class PinCodeSyntax implements ISyntaxValidator {
     }
 
     @Override
-    public String mode(String mode) {
-        return "ONLINE";
+    public boolean mode(String mode) {
+        return true;
     }
 
     @Override

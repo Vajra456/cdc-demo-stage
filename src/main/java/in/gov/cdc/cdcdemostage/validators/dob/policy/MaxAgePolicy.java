@@ -5,21 +5,29 @@ import in.gov.cdc.cdcdemostage.models.ValidationError;
 import in.gov.cdc.cdcdemostage.validators.specs.IPolicyValidator;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.BitSet;
 import java.util.Optional;
+
+import static in.gov.cdc.cdcdemostage.constant.Constants.OFFLINE;
+import static in.gov.cdc.cdcdemostage.constant.Constants.ONLINE;
 
 @Component
 public class MaxAgePolicy implements IPolicyValidator {
     @Override
     public boolean supports(BitSet b) {
-        return b.get(3);
+        return b.get(5) || b.get(13);           // Check the applicability of this validator
     }
 
+    /**
+     * This class is used to validate the date syntax for both ONLINE and OFFLINE mode
+     * @param mode
+     * @return
+     */
     @Override
-    public String mode(String mode) {
-        return "ONLINE";
+    public boolean mode(String mode) {
+        return mode.equals(ONLINE) || mode.equals(OFFLINE);
     }
+
 
     /**
      * Entry method to check validate the max age of the resident

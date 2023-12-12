@@ -14,10 +14,10 @@ public interface IObjectValidator {
     boolean supports(BitSet b);
 
     // This defines the mode of the enrolment request i.e ONLINE or OFFLINE
-    String mode (String mode);
+    boolean mode (String mode);
 
     // This defines the kind of request ENROLLMENT, UPDATE, DELETE
-    String requestType (String requestType);
+    boolean requestType (String requestType);
 
 
     Optional<List<ValidationError>> validate(ExtractedPacket enrollmentPacket, Event eventMessage);

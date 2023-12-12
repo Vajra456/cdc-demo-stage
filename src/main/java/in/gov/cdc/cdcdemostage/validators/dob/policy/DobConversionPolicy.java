@@ -9,6 +9,9 @@ import org.springframework.stereotype.Component;
 import java.util.BitSet;
 import java.util.Optional;
 
+import static in.gov.cdc.cdcdemostage.constant.Constants.OFFLINE;
+import static in.gov.cdc.cdcdemostage.constant.Constants.ONLINE;
+
 /**
  * This class handles the Dob conversion from Approximate/Declared to Verified status.
  * Prevents downward revision of Dob from Verified to Approximate/Declared
@@ -16,17 +19,21 @@ import java.util.Optional;
 @Component
 public class DobConversionPolicy implements IPolicyValidator {
 
-
-
     @Override
     public boolean supports(BitSet b) {
-        return true;
+        return b.get(5) || b.get(13);           // Check the applicability of this validator
     }
 
+    /**
+     * This class is used to validate the date syntax for both ONLINE and OFFLINE mode
+     * @param mode
+     * @return
+     */
     @Override
-    public String mode(String mode) {
-        return "ONLINE";
+    public boolean mode(String mode) {
+        return mode.equals(ONLINE) || mode.equals(OFFLINE);
     }
+
 
     @Override
     public Optional<ValidationError> validate(ExtractedPacket data) {

@@ -7,7 +7,6 @@ import in.gov.cdc.cdcdemostage.validators.specs.ISyntaxValidator;
 
 import java.util.BitSet;
 import java.util.Optional;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
@@ -20,8 +19,8 @@ public class MobileSyntaxValidator implements ISyntaxValidator {
         return bitSet.get(9);
     }
     @Override
-    public String mode(String mode){
-        return "ONLINE";
+    public boolean mode(String mode){
+        return true;
     }
 
     /**

@@ -3,7 +3,6 @@ package in.gov.cdc.cdcdemostage.validators.address.syntax;
 import in.gov.cdc.cdcdemostage.models.ExtractedPacket;
 import in.gov.cdc.cdcdemostage.models.ValidationError;
 import in.gov.cdc.cdcdemostage.validators.specs.ISyntaxValidator;
-import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.BitSet;
@@ -24,8 +23,8 @@ public class AddressSyntax implements ISyntaxValidator {
     }
 
     @Override
-    public String mode(String mode) {
-        return null;
+    public boolean mode(String mode) {
+        return true;
     }
 
 

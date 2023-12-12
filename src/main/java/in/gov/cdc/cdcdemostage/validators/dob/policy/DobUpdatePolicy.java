@@ -7,6 +7,9 @@ import in.gov.cdc.cdcdemostage.validators.specs.IPolicyValidator;
 import java.util.BitSet;
 import java.util.Optional;
 
+import static in.gov.cdc.cdcdemostage.constant.Constants.OFFLINE;
+import static in.gov.cdc.cdcdemostage.constant.Constants.ONLINE;
+
 /**
  * This class implments the UIDAI policy on the age update rules.
  * It also handles the exception flow related to date update
@@ -14,12 +17,17 @@ import java.util.Optional;
 public class DobUpdatePolicy implements IPolicyValidator {
     @Override
     public boolean supports(BitSet b) {
-        return false;
+        return b.get(5) || b.get(13);           // Check the applicability of this validator
     }
 
+    /**
+     * This class is used to validate the date syntax for both ONLINE and OFFLINE mode
+     * @param mode
+     * @return
+     */
     @Override
-    public String mode(String mode) {
-        return "ONLINE";
+    public boolean mode(String mode) {
+        return mode.equals(ONLINE) || mode.equals(OFFLINE);
     }
 
     @Override

@@ -16,8 +16,8 @@ public class EmailValidator implements ISyntaxValidator {
         return bitSet.get(9);
     }
     @Override
-    public String mode(String mode){
-        return "ONLINE";
+    public boolean mode(String mode){
+        return true;
     }
 
     @Override

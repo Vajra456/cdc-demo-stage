@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 import java.util.BitSet;
 import java.util.Optional;
 
+import static in.gov.cdc.cdcdemostage.constant.Constants.OFFLINE;
+import static in.gov.cdc.cdcdemostage.constant.Constants.ONLINE;
+
 /**
  * This class handles the Dob declaration policy of UIDAI. It checks for DobType
  * and based on that value of the date field and as well availaibility of the
@@ -17,13 +20,19 @@ import java.util.Optional;
 public class DoBDeclarationPolicy implements IPolicyValidator {
     @Override
     public boolean supports(BitSet b) {
-        return false;
+        return b.get(5) || b.get(13);           // Check the applicability of this validator
     }
 
+    /**
+     * This class is used to validate the date syntax for both ONLINE and OFFLINE mode
+     * @param mode
+     * @return
+     */
     @Override
-    public String mode(String mode) {
-        return "ONLINE";
+    public boolean mode(String mode) {
+        return mode.equals(ONLINE) || mode.equals(OFFLINE);
     }
+
 
     /**
      * Entry method to check the DobDeclarationPolicy

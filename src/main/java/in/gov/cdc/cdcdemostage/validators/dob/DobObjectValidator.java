@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static in.gov.cdc.cdcdemostage.constant.Constants.OFFLINE;
+import static in.gov.cdc.cdcdemostage.constant.Constants.ONLINE;
+
 /**
  * This class will orchestrate Dob validation checks against the incoming request.
  * Outcome of the validation would be recorded in the reject bitmap
@@ -23,26 +26,31 @@ import java.util.stream.Collectors;
 public class DobObjectValidator implements IObjectValidator {
 
 
-
-
     // Constructor injection of all validators
     List<IValidator> validators;
 
 
     @Override
-    public String mode(String mode) {
-        return null;
+    public boolean supports(BitSet b) {
+        return b.get(5) || b.get(13);           // Check the applicability of this validator
     }
 
+    /**
+     * This class is used to validate the date syntax for both ONLINE and OFFLINE mode
+     * @param mode
+     * @return
+     */
     @Override
-    public String requestType(String requestType) {
-        return null;
+    public boolean mode(String mode) {
+        return mode.equals(ONLINE) || mode.equals(OFFLINE);
     }
 
+
     @Override
-    public boolean supports(BitSet bitSet) {
-        return bitSet.get(3);
+    public boolean requestType(String requestType) {
+        return true;
     }
+
 
     // Default constructor. Here we are initializing the validators
     public DobObjectValidator(List<IValidator> validators) {

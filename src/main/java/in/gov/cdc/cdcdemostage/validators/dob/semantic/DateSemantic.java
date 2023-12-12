@@ -5,26 +5,31 @@ import in.gov.cdc.cdcdemostage.models.ValidationError;
 import in.gov.cdc.cdcdemostage.validators.specs.ISyntaxValidator;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.BitSet;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Optional;
+
+import static in.gov.cdc.cdcdemostage.constant.Constants.OFFLINE;
+import static in.gov.cdc.cdcdemostage.constant.Constants.ONLINE;
 
 @Service
 public class DateSemantic implements ISyntaxValidator {
 
 
     @Override
-    public boolean supports(BitSet bitSet) {
-
-        return bitSet.get(3);
+    public boolean supports(BitSet b) {
+        return b.get(5) || b.get(13);           // Check the applicability of this validator
     }
 
+    /**
+     * This class is used to validate the date syntax for both ONLINE and OFFLINE mode
+     * @param mode
+     * @return
+     */
     @Override
-    public String mode(String mode) {
-        return "ONLINE";
+    public boolean mode(String mode) {
+        return mode.equals(ONLINE) || mode.equals(OFFLINE);
     }
+
 
     @Override
     public Optional<ValidationError> validate(ExtractedPacket data) {

@@ -21,8 +21,8 @@ public class AddressUpdatePolicy implements IPolicyValidator {
     }
 
     @Override
-    public String mode(String mode) {
-        return "ONLINE";
+    public boolean mode(String mode) {
+        return true;
     }
 
     @Override

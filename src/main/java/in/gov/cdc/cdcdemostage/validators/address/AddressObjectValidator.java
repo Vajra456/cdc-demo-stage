@@ -21,13 +21,13 @@ public class AddressObjectValidator implements IObjectValidator {
     }
 
     @Override
-    public String mode(String mode) {
-        return null;
+    public boolean mode(String mode) {
+        return true;
     }
 
     @Override
-    public String requestType(String requestType) {
-        return null;
+    public boolean requestType(String requestType) {
+        return true;
     }
 
     @Override

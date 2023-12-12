@@ -10,12 +10,16 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static in.gov.cdc.cdcdemostage.constant.Constants.OFFLINE;
+import static in.gov.cdc.cdcdemostage.constant.Constants.ONLINE;
+
 /**
  * This class performs the syntax validation on the Date field. This can be converted to an
  * abstract class for validation fo all kinds of the date
  */
 @Component
 public class DateSyntaxValidator  implements ISyntaxValidator {
+
 
     // This  regular expression (regex) that can be used to validate year in the yyyy format.
     public static final Pattern yearSyntaxCheck = Pattern.compile("^\\d{4}$");
@@ -56,14 +60,24 @@ public class DateSyntaxValidator  implements ISyntaxValidator {
         return validationError;
     }
 
+    /**
+     * This class is used to validate the DOB and PoB.
+     * @param b
+     * @return
+     */
     @Override
     public boolean supports(BitSet b) {
-        return false;
+        return b.get(5) || b.get(13);           // Check the applicability of this validator
     }
 
+    /**
+     * This class is used to validate the date syntax for both ONLINE and OFFLINE mode
+     * @param mode
+     * @return
+     */
     @Override
-    public String mode(String mode) {
-        return "ONLINE";
+    public boolean mode(String mode) {
+        return mode.equals(ONLINE) || mode.equals(OFFLINE);
     }
 
     @Override
